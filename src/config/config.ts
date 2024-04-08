@@ -21,7 +21,7 @@
 const config = {
   googleId: process.env.GOOGLE_ID || "",
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-  mongoDbUri: process.env.MONGODB_URI || "",
+  mongoDbUri: process.env.MONGO_URI || "",
 };
 
 export default config;
