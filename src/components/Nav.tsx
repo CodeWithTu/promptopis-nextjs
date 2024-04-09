@@ -2,9 +2,19 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEventHandler } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import { Logo } from "../../public/assets/images";
+
+const handleSignOut: MouseEventHandler<HTMLButtonElement> = async (event) => {
+  event.preventDefault();
+  try {
+    await signOut();
+  } catch (error) {
+    console.error("Sign out error:", error);
+  }
+};
+
 const Nav = () => {
   const { data: session } = useSession();
 
@@ -13,7 +23,7 @@ const Nav = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await getProviders();
+      const res: any = await getProviders();
       setProviders(res);
     })();
   }, []);
@@ -32,18 +42,22 @@ const Nav = () => {
               Create Post
             </Link>
 
-            <button type="button" onClick={signOut} className="outline_btn">
+            <button type="button" onClick={handleSignOut} className="outline_btn">
               Sign Out
             </button>
             <Link href="/profile">
-              <Image
-                src={session?.user.image}
-                width={37}
-                height={37}
-                alt="profile"
-                className="rounded-full"
-                onClick={() => setToggleDropdown((prev) => !prev)}
-              />
+              {session?.user?.image ? (
+                <Image
+                  src={session?.user?.image}
+                  width={37}
+                  height={37}
+                  alt="profile"
+                  className="rounded-full"
+                  onClick={() => setToggleDropdown((prev) => !prev)}
+                />
+              ) : (
+                <></>
+              )}
             </Link>
           </div>
         ) : (
@@ -62,14 +76,18 @@ const Nav = () => {
       <div className="sm:hidden flex relative">
         {session?.user ? (
           <div className="flex">
-            <Image
-              src={session?.user.image}
-              width={37}
-              height={37}
-              alt="profile"
-              className="rounded-full"
-              onClick={() => setToggleDropdown((prev) => !prev)}
-            />
+            {session?.user?.image ? (
+              <Image
+                src={session?.user?.image}
+                width={37}
+                height={37}
+                alt="profile"
+                className="rounded-full"
+                onClick={() => setToggleDropdown((prev) => !prev)}
+              />
+            ) : (
+              <></>
+            )}
 
             {toggleDropdown && (
               <div className="dropdown">

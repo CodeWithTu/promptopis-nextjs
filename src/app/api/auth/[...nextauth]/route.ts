@@ -1,9 +1,19 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import type { DefaultSession } from "next-auth";
 
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import config from "@/config/config";
+
+declare module "next-auth" {
+  interface Session {
+    user?: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+  interface DefaultUser {}
+}
 
 const handler = NextAuth({
   providers: [
@@ -17,7 +27,6 @@ const handler = NextAuth({
       // store the user id from MongoDB to session
       const sessionUser = await User.findOne({ email: session.user.email });
       session.user.id = sessionUser._id.toString();
-
       return session;
     },
     async signIn({ account, profile, user, credentials }: any) {
