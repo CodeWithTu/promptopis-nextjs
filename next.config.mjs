@@ -6,7 +6,7 @@ const nextConfig = {
     loaderFile: "./ImageLoader.ts",
   },
   experimental: {
-    appDir: true,
+    // appDir: true,
     serverComponentsExternalPackages: ["mongoose"],
   },
   webpack(config) {

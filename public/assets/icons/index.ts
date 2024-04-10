@@ -1,4 +1,4 @@
 import tick from "./tick.svg";
 import copy from "./copy.svg";
-
-export { tick, copy };
+import loader from "./loader.svg";
+export { tick, copy, loader };
